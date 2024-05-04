@@ -116,8 +116,12 @@ def main(self, settings):
 	)
 	session = ar.CreateFrame(job_batch, settings)
 
-	group.create(self, session=session, get_ready=5.0)
-	m = self.select(ar.Completed)
+	a = group.create(self, session=session, get_ready=5.0)
+	m = self.select(ar.Completed, ar.Stop)
+	if isinstance(m, ar.Stop):
+		self.send(m, a)
+		self.select(ar.Completed, ar.Stop)
+		return ar.Aborted()
 
 	return m.value
 

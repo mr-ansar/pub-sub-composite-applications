@@ -54,11 +54,28 @@ $(ANSAR): build
 
 home: $(ANSAR)
 
+#
+#
 job-batch: home
 	ansar add job-batch job-batch
 	ansar add parse parse
 	ansar add codegen codegen
 	ansar add vm vm
 
+run:
+	ansar --debug-level=DEBUG run --main-role=job-batch
+
 clean:: clean-build
 	-ansar -f destroy
+
+#
+#
+expression-library: home
+	ansar add parse parse
+	ansar add codegen codegen
+	ansar add vm vm
+	ansar network --connect-scope=GROUP --to-scope=HOST
+	ansar network
+
+start-library:
+	ansar start
